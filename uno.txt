@@ -1,0 +1,10 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+"primera linea"
+=======
+"segunda linea"
+>>>>>>> ramados
+=======
+"segunda linea"
+"tercera linea"
+>>>>>>> ramados
