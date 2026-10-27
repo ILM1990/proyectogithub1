@@ -1,0 +1,15 @@
+name: Verificar tokens
+on: workflow_dispatch          # se lanza a mano desde la pestaña Actions
+
+jobs:
+  comprobar:
+    runs-on: self-hosted       # se ejecuta en tu PC, no en GitHub
+    steps:
+      - name: Comparar secrets con variables locales
+        shell: powershell      # importante: en tu PC no hay pwsh
+        env:
+          DEV_TOKEN: ${{ secrets.DEV_TOKEN }}
+          PROD_TOKEN: ${{ secrets.PROD_TOKEN }}
+        run: |
+          if ($env:DEV_TOKEN -eq $env:LOCAL_DEV_TOKEN) { "DEV coincide" } else { "DEV NO coincide"; exit 1 }
+          if ($env:PROD_TOKEN -eq $env:PROD_LOCAL_TOKEN) { "PROD coincide" } else { "PROD NO coincide"; exit 1 }
