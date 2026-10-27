@@ -12,4 +12,4 @@ jobs:
           PROD_TOKEN: ${{ secrets.PROD_TOKEN }}
         run: |
           if ($env:DEV_TOKEN -eq $env:LOCAL_DEV_TOKEN) { "DEV coincide" } else { "DEV NO coincide"; exit 1 }
-          if ($env:PROD_TOKEN -eq $env:LOCAL_PROD_TOKEN) { "PROD coincide" } else { "PROD NO coincide"; exit 1 }
+          if ($env:PROD_TOKEN -eq $env:PROD_LOCAL_TOKEN) { "PROD coincide" } else { "PROD NO coincide"; exit 1 }
