@@ -1,0 +1,42 @@
+
+name: CD
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bump-version
+  cancel-in-progress: false
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest        # o self-hosted
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Incrementar versión en el README
+        env:
+          TZ: Europe/Madrid
+        run: |
+          LAST=$(sed -nE 's/.*AppVersion-([0-9]+).*/\1/p' README.md | sort -n | tail -1)
+          LAST=${LAST:-0}
+          NEXT=$((LAST + 1))
+          FECHA=$(date '+%d/%m/%Y %H:%M')
+          echo "- AppVersion-$NEXT - $FECHA" >> README.md
+          echo "Nueva versión: $NEXT"
+
+      - name: Commit y push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "chore: AppVersion-$(sed -nE 's/.*AppVersion-([0-9]+).*/\1/p' README.md | sort -n | tail -1) [skip ci]"
+          git push
